@@ -5,9 +5,12 @@ import com.springmvc.advancemapping.onetoone.entity.Course;
 import com.springmvc.advancemapping.onetoone.entity.Instructor;
 import com.springmvc.advancemapping.onetoone.entity.InstructorDetail;
 import jakarta.persistence.EntityManager;
+import jakarta.persistence.TypedQuery;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
 
 @Component
 public class AppDAOImpl implements AppDAO {
@@ -68,5 +71,25 @@ public class AppDAOImpl implements AppDAO {
     @Override
     public Course findCourseById(int id) {
         return theEntityManager.find(Course.class, id);
+    }
+
+    @Override
+    public List<Course> findCoursesByInstructorId(int instructorId) {
+
+        TypedQuery<Course> tempQuery = theEntityManager.createQuery("from Course where instructor.id=:data", Course.class);
+        tempQuery.setParameter("data", instructorId);
+        List<Course> courses = tempQuery.getResultList();
+        return courses;
+    }
+
+    @Override
+    public Instructor findCoursesByInstructorIdJoinFetch(int instructorId) {
+        TypedQuery<Instructor> tempQuery = theEntityManager.createQuery(
+                                        "SELECT i FROM Instructor i "
+                                                     + "JOIN FETCH i.courses "
+                                                     + "WHERE i.id=:data", Instructor.class);
+        tempQuery.setParameter("data", instructorId);
+        Instructor instructor = tempQuery.getSingleResult();
+        return instructor;
     }
 }

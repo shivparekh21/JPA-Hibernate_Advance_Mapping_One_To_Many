@@ -9,6 +9,8 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
 
+import java.util.*;
+
 @SpringBootApplication
 public class OnetooneApplication {
 
@@ -33,7 +35,9 @@ public class OnetooneApplication {
 			//
 //			createInstructorWithCources(appDAO);
 //			findInstructorByCoursesId(appDAO);
-			findInstructorWithCourses(appDAO);
+//			findInstructorWithCourses(appDAO);
+//			findCourseWithInstructorId(appDAO);
+			findCourseWithInstructorIdJoinFetch(appDAO);
 		};
 	}
 
@@ -121,5 +125,35 @@ public class OnetooneApplication {
 		System.out.println("Instructor: " + instructor);
 		System.out.println("Courses: " + instructor.getCourse());
 	}
+
+	private void findCourseWithInstructorId(AppDAO appDAO) {
+		int instructorId = 1;
+
+		Instructor instructor = appDAO.findInstructorById(instructorId);
+		System.out.println("Instructor: " + instructor);
+
+
+		System.out.println("Finding courses for instructor id: " + instructorId);
+		List<Course> courses = appDAO.findCoursesByInstructorId(instructorId);
+		instructor.setCourse(courses);
+
+		System.out.println("Courses: " + instructor.getCourse());
+	}
+
+	private void findCourseWithInstructorIdJoinFetch(AppDAO appDAO) {
+		int instructorId = 1;
+
+		Instructor instructor = appDAO.findCoursesByInstructorIdJoinFetch(instructorId);
+		System.out.println("Instructor: " + instructor);
+		System.out.println("Courses: " + instructor.getCourse());
+		System.out.println("JOIN FETCH forces Hibernate to load related data immediately in a single query");
+		System.out.println("What JOIN FETCH does:\n" +
+				"\n" +
+				"✅ Fetches Instructor + Courses in ONE query\n" +
+				"✅ Avoids LazyInitializationException\n" +
+				"✅ Overrides LAZY loading for this query only");
+	}
+
+
 
 }
