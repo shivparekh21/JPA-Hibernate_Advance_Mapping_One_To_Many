@@ -1,6 +1,7 @@
 package com.springmvc.advancemapping.onetoone;
 
 import com.springmvc.advancemapping.onetoone.dao.AppDAO;
+import com.springmvc.advancemapping.onetoone.entity.Course;
 import com.springmvc.advancemapping.onetoone.entity.Instructor;
 import com.springmvc.advancemapping.onetoone.entity.InstructorDetail;
 import org.springframework.boot.CommandLineRunner;
@@ -24,10 +25,15 @@ public class OnetooneApplication {
 //			findInstructorById(appDAO);
 //			deleteInstructorById(appDAO);
 
+			// one to one bidirectional
+
 //			findInstructorDetailById(appDAO);
-			deleteInstructorDetailById(appDAO);
+//			deleteInstructorDetailById(appDAO);
 
-
+			//
+//			createInstructorWithCources(appDAO);
+//			findInstructorByCoursesId(appDAO);
+			findInstructorWithCourses(appDAO);
 		};
 	}
 
@@ -78,6 +84,42 @@ public class OnetooneApplication {
 		int theId=5;
 		appDAO.deleteInstructorDetailById(theId);
 		System.out.println("Deleted instructor detail id: " + theId);
+	}
+
+
+
+
+
+	private void createInstructorWithCources(AppDAO appDAO) {
+		Instructor instructor =
+				new Instructor("Susan", "Public", "	susan.p@gmail.com");
+		InstructorDetail instructorDetail =
+				new InstructorDetail("http://www.youtube.com/susanpublic", "Painting");
+		instructor.setInstructorDetail(instructorDetail);
+		// create some courses
+		Course tempCourse1 = new Course("Painting - The Ultimate Guide");
+		Course tempCourse2 = new Course("Sketching for Beginners");
+		// add courses to instructor
+		instructor.addCourse(tempCourse1);
+		instructor.addCourse(tempCourse2);
+		// save the instructor
+		System.out.println("Saving instructor: " + instructor);
+		appDAO.saveInstructor(instructor);
+	}
+
+	private void findInstructorByCoursesId(AppDAO appDAO) {
+		int courseId = 10;
+		Course course = appDAO.findCourseById(courseId);
+		Instructor courseInstructor = course.getInstructor();
+		System.out.println("Course: " + course);
+		System.out.println("Instructor of the course: " + courseInstructor);
+	}
+
+	private void findInstructorWithCourses(AppDAO appDAO) {
+		int theId = 1;
+		Instructor instructor = appDAO.findInstructorById(theId);
+		System.out.println("Instructor: " + instructor);
+		System.out.println("Courses: " + instructor.getCourse());
 	}
 
 }

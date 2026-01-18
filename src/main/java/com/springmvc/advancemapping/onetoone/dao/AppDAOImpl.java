@@ -1,6 +1,7 @@
 package com.springmvc.advancemapping.onetoone.dao;
 
 
+import com.springmvc.advancemapping.onetoone.entity.Course;
 import com.springmvc.advancemapping.onetoone.entity.Instructor;
 import com.springmvc.advancemapping.onetoone.entity.InstructorDetail;
 import jakarta.persistence.EntityManager;
@@ -62,6 +63,10 @@ public class AppDAOImpl implements AppDAO {
         }else {
             System.out.println("InstructorDetail not found with id: " + id);
         }
+    }
 
+    @Override
+    public Course findCourseById(int id) {
+        return theEntityManager.find(Course.class, id);
     }
 }

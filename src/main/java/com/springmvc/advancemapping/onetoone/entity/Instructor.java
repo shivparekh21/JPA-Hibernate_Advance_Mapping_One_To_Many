@@ -26,8 +26,12 @@ public class Instructor {
     @JoinColumn(name = "instructor_detail_id")
     private InstructorDetail instructorDetail;
 
-    @OneToMany(mappedBy = "instructor")
-    private List<Course> course;
+    @OneToMany(mappedBy = "instructor",
+            cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH},
+            fetch = FetchType.LAZY)
+    private List<Course> courses;
+
+
 
     public Instructor() {
     }
@@ -87,5 +91,21 @@ public class Instructor {
                 ", email='" + email + '\'' +
                 ", instructorDetailId=" + instructorDetail +
                 '}';
+    }
+
+    public List<Course> getCourse() {
+        return courses;
+    }
+
+    public void setCourse(List<Course> course) {
+        this.courses = course;
+    }
+
+    public void addCourse(Course course) {
+        if (courses == null) {
+            courses = new ArrayList<>();
+        }
+        courses.add(course);
+        course.setInstructor(this);
     }
 }
