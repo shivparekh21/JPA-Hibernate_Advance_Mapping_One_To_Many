@@ -30,7 +30,7 @@ public class OnetooneApplication {
 			// one to one bidirectional
 
 //			findInstructorDetailById(appDAO);
-//			deleteInstructorDetailById(appDAO);
+			deleteInstructorDetailById(appDAO);
 
 			//
 //			createInstructorWithCources(appDAO);
@@ -39,7 +39,9 @@ public class OnetooneApplication {
 //			findCourseWithInstructorId(appDAO);
 //			findCourseWithInstructorIdJoinFetch(appDAO);
 			
-			updateInstructor(appDAO);
+//			updateInstructor(appDAO);
+//			deleteInstructor(appDAO);
+//			deleteCourse(appDAO);
 		};
 	}
 
@@ -87,7 +89,7 @@ public class OnetooneApplication {
 	}
 
 	private void deleteInstructorDetailById(AppDAO appDAO) {
-		int theId=5;
+		int theId=1;
 		appDAO.deleteInstructorDetailById(theId);
 		System.out.println("Deleted instructor detail id: " + theId);
 	}
@@ -165,4 +167,17 @@ public class OnetooneApplication {
 		System.out.println("Done");
 	}
 
+	private void deleteInstructor(AppDAO appDAO) {
+		int theId=1;
+		System.out.println("Deleting instructor id: " + theId);
+		appDAO.deleteInstructor(theId);
+		System.out.println("Deleted instructor id: " + theId);
+	}
+
+
+	private void deleteCourse(AppDAO appDAO) {
+		int theId=11;
+		System.out.println("Deleting course id: " + theId);
+		appDAO.deleteCourse(theId);
+	}
 }
