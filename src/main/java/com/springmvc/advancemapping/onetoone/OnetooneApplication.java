@@ -37,7 +37,9 @@ public class OnetooneApplication {
 //			findInstructorByCoursesId(appDAO);
 //			findInstructorWithCourses(appDAO);
 //			findCourseWithInstructorId(appDAO);
-			findCourseWithInstructorIdJoinFetch(appDAO);
+//			findCourseWithInstructorIdJoinFetch(appDAO);
+			
+			updateInstructor(appDAO);
 		};
 	}
 
@@ -154,6 +156,13 @@ public class OnetooneApplication {
 				"✅ Overrides LAZY loading for this query only");
 	}
 
-
+	private void updateInstructor(AppDAO appDAO) {
+		int theId=1;
+		Instructor instructor = appDAO.findInstructorById(theId);
+		System.out.println("Updating instructor: " + instructor);
+		instructor.setLastName("Rocky");
+		appDAO.updateInstructor(instructor);
+		System.out.println("Done");
+	}
 
 }
